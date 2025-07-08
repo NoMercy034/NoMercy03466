@@ -66,10 +66,16 @@ local function tpSky()
     end
 end
 
-local function tpDown()
+-- تعديل: وظيفة Fall Down (يسحب اللاعب لأسفل تدريجياً)
+local function fallDown()
     local hrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     if hrp then
-        hrp.CFrame = hrp.CFrame - Vector3.new(0, 300, 0)
+        local startY = hrp.Position.Y
+        local targetY = startY - 300
+        for y = startY, targetY, -5 do
+            hrp.CFrame = CFrame.new(hrp.Position.X, y, hrp.Position.Z)
+            wait(0.05)
+        end
     end
 end
 
@@ -113,7 +119,7 @@ local function makeButton(text, yPos, callback)
 end
 
 makeButton("🛫 TP to Sky", 50, tpSky)
-makeButton("🪂 TP Down", 90, tpDown)
+makeButton("⬇️ Fall Down", 90, fallDown)
 makeButton("⚡ Speed 100", 130, function() setSpeed(100) end)
 makeButton("🐢 Speed 16", 170, function() setSpeed(16) end)
 makeButton("🦘 Super Jump ON", 210, function() superJump(true) end)
